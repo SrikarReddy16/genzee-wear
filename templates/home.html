@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% block title %}GenZee-Home{% endblock %}
+{% block body %}
+{% load static %}
+<style>
+    .offer-box{
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 10px;
+        padding: 10px;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+    }
+    .offer-box::-webkit-scrollbar{
+        display: none; 
+    }
+    .offers{
+        flex: 0 0 280px;
+        background: white;
+        height: 350px;
+        width: 300px;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        scroll-snap-align: start;
+    }
+    .offers h3{
+        margin-bottom: 10px;
+        text-align: center;
+        color: #333;
+    }
+    .offers p{
+        
+        margin: 5px 0;
+        color: #666;
+    }
+    @media screen and (max-width: 768px) {
+    header h1 {
+        font-size: 50px;
+        padding: 20px;
+    }
+    header p {
+        font-size: 16px;
+        text-align: center;
+        margin: 0;
+    }
+    .navbar ul {
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+    }
+    .navbar li {
+        margin: 5px 0;
+    }
+    .offers {
+        width: 100%;
+        max-width: 90%;
+        margin: auto;
+    }
+    .box {
+        width: 90%;
+        margin: 40px auto;
+    }
+    .search-container input {
+        width: 90%;
+    }
+    .search-button {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+/* ✅ Even Smaller Screens (📱 < 480px) */
+@media screen and (max-width: 480px) {
+    header {
+        height: auto;
+        padding: 10px 0;
+    }
+    header h1 {
+        font-size: 40px;
+        padding: 10px;
+    }
+    h2 {
+        font-size: 30px;
+    }
+    h3 {
+        font-size: 25px;
+    }
+    .offer-box {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .offers {
+        width: 90%;
+        height: auto;
+        padding: 20px;
+    }
+    .box {
+        width: 95%;
+    }
+}
+
+</style>
+<h1>Welcome {{user.username}}</h1>
+<h2>Here is all our updates about the store</h2>
+<div class="offer-box">
+    {% for off in offer %}
+    <div class="offers">
+        <h3>{{off.name}}</h3>
+        <p>{{off.description}}</p>
+        <p>{{off.startdate}}-{{off.enddate}}</p>
+        <button><a href="">View offer</a></button>
+    </div>
+    {% empty %}
+    <p>no offers are available</p>
+    {% endfor %}
+</div>
+<div class="offer-box">
+    {% for new in arrivals %}
+    <div class="offers">
+        <h3>{{new.type}} from {{new.brand}}</h3>
+    </div>
+    {% empty %}
+    <h3>No new arrivals</h3>
+    {% endfor %}
+</div>
+
+{% endblock %}

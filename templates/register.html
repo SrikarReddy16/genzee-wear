@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}GenZee-Register{% endblock %}
+{% block body %}
+<style>
+.container {
+    padding: 30px;
+}
+
+.box {
+    padding: 40px;
+    border: 1px solid #ccc; 
+    background-color: white; 
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin: 60px auto; /* Centered properly */
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: lighter;
+    font-family: 'Serena', serif;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Prevents width overflow */
+}
+
+input[type="submit"] {
+    background-color: #27abd3; 
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover {
+    background-color: #0050c7;
+}
+
+.box h2 {
+    text-align: center;
+    padding-bottom: 10px;
+    font-weight: lighter;
+    font-family: 'Serena', serif; /* Fixed font-family */
+}
+
+.message {
+    color: red;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+/* ✅ Responsive Design: Tablets & Smaller Screens */
+@media screen and (max-width: 768px) {
+    header h1 {
+        font-size: 50px;
+        padding: 20px;
+    }
+    header p {
+        font-size: 16px;
+        text-align: center;
+        margin: 0;
+    }
+    .navbar ul {
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+    }
+    .navbar li {
+        margin: 5px 0;
+    }
+    .offers {
+        width: 100%;
+        max-width: 90%;
+        margin: auto;
+    }
+    .box {
+        width: 90%;
+        margin: 40px auto;
+    }
+    .search-container input {
+        width: 90%;
+    }
+    .search-button {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+/* ✅ Even Smaller Screens (📱 < 480px) */
+@media screen and (max-width: 480px) {
+    header {
+        height: auto;
+        padding: 10px 0;
+    }
+    header h1 {
+        font-size: 40px;
+        padding: 10px;
+    }
+    h2 {
+        font-size: 30px;
+    }
+    h3 {
+        font-size: 25px;
+    }
+    .offer-box {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .offers {
+        width: 90%;
+        height: auto;
+        padding: 20px;
+    }
+    .box {
+        width: 95%;
+    }
+}
+
+
+</style>
+<div class="container">
+    <div class="box">
+        <h2>Register here</h2>
+        <form action="register" method="POST">
+            {% csrf_token %}
+            {% if messages %}
+            {% for message in messages %}
+                <p class="message">{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+            <label for="username">Username : </label>
+            <input type="text" name="username">
+            <label for="email">E-mail : </label>
+            <input type="email" name="email">
+            <label for="password">Password : </label>
+            <input type="password" name="password">
+            <label for="password2">Re-Type Password : </label>
+            <input type="password" name="password2">
+            <input type="submit" value="Submit">
+    
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+</div>
+
+{% endblock %}

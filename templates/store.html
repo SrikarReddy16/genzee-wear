@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+{% block title %}GenZee-Store{% endblock %}
+{% load static %}
+{% block body %}
+<style>
+    .filter-container {
+        margin-right: 1000px;
+        text-align: center;
+        margin-top: -50px;
+        margin-bottom: 20px;
+    }
+    .filter-button {
+        background-color: #000000;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .filters {
+        display: none;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        margin: 20px auto;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .filters.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .filters input,
+    .filters select,
+    .apply-button {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .apply-button {
+        
+        background-color: #000000;
+        color: white;
+        cursor: pointer;
+    }
+
+    .apply-button:hover {
+        background-color: #3b413c;
+    }
+
+    .search-container {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 10px;
+    }
+
+    .search-container input {
+        height: 50px;
+        width: 400px;
+        padding: 8px;
+        font-size: 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .search-button {
+        height: 50px;
+        width: 130px;
+        font-family: '1769' , serif;
+        font-size: 20px;
+        background-color: #000000;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-left: 15px;
+    }
+
+    .search-button:hover {
+        background-color: #24282c;
+    }
+    .items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .item {
+        height: 350px;
+        width: 350px;
+        margin: 30px;
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 5px;
+    }
+
+    .item h2 {
+        margin-top: 0;
+    }
+    @media screen and (max-width: 768px) {
+    header h1 {
+        font-size: 50px;
+        padding: 20px;
+    }
+    header p {
+        font-size: 16px;
+        text-align: center;
+        margin: 0;
+    }
+    .navbar ul {
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+    }
+    .navbar li {
+        margin: 5px 0;
+    }
+    .offers {
+        width: 100%;
+        max-width: 90%;
+        margin: auto;
+    }
+    .box {
+        width: 90%;
+        margin: 40px auto;
+    }
+    .search-container input {
+        width: 90%;
+    }
+    .search-button {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+/* ✅ Even Smaller Screens (📱 < 480px) */
+@media screen and (max-width: 480px) {
+    header {
+        height: auto;
+        padding: 10px 0;
+    }
+    header h1 {
+        font-size: 40px;
+        padding: 10px;
+    }
+    h2 {
+        font-size: 30px;
+    }
+    h3 {
+        font-size: 25px;
+    }
+    .offer-box {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .offers {
+        width: 90%;
+        height: auto;
+        padding: 20px;
+    }
+    .box {
+        width: 95%;
+    }
+}
+
+
+</style>
+<section class="search-container">
+    <form method="get">
+        <input type="text" name="search" placeholder="Search items..." class="splace" value="{{ request.GET.search }}">
+        <button type="submit" class="search-button">Search</button>
+    </form>
+</section>
+<section class="filter-container">
+    <button id="toggleFilters" class="filter-button">Filters</button>
+    <div id="filters" class="filters">
+        <form method="get">
+            <input type="number" name="min_price" placeholder="Min Price">
+            <input type="number" name="max_price" placeholder="Max Price">
+            <select name="gender">
+                <option value="">All Genders</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+            <button type="submit" class="apply-button">Apply Filters</button>
+        </form>
+    </div>
+</section>
+<section class="items">
+    {% for item in materials %}
+        <div class="item">
+            <h2>{{ item.name }}</h2>
+            <p>{{ item.description }}</p>
+            <p>Price: ₹{{ item.price }}</p>
+            <p>Gender: {{ item.get_gender_display }}</p>
+            <img src="{{ StoreItem.image.url }}" alt="{{ StoreItem.name }}">
+            <button><a href="">Buy now</a></button><button><a href="{% url 'add_to_cart' item.id %}">Add to cart</a></button>
+        </div>
+    {% empty %}
+        <p>No items found.</p>
+    {% endfor %}
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var toggleButton = document.getElementById("toggleFilters");
+        var filters = document.getElementById("filters");
+
+        toggleButton.addEventListener("click", function () {
+            if (filters.classList.contains("show")) {
+                filters.classList.remove("show");
+                setTimeout(() => {
+                    filters.style.display = "none";
+                }, 300);
+            } else {
+                filters.style.display = "block";
+                setTimeout(() => {
+                    filters.classList.add("show");
+                }, 10);
+            }
+        });
+    });
+</script>
+{% endblock %}
