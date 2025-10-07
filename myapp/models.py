@@ -24,7 +24,7 @@ class StoreItem(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10,decimal_places=2)
     gender = models.CharField(max_length=1,choices=Gender_Choice)
-    image = models.ImageField(upload_to='images', blank=True, null=True)
+    image = models.ImageField(upload_to='media/images', blank=True, null=True)
 
 class Cart(models.Model):
 

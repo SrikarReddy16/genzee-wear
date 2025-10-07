@@ -3,15 +3,43 @@
 {% load static %}
 {% block body %}
 <style>
-    .filter-container {
-        margin-right: 1000px;
+    /* Store-specific styles */
+    
+    .search-container {
         text-align: center;
-        margin-top: -50px;
-        margin-bottom: 20px;
+        margin: 30px 0 20px 0;
     }
+
+    .search-container input {
+        line-height: 50px;
+        width: 100%;
+        max-width: 400px;
+        padding: 8px;
+        font-size: 18px;
+        border: 1px solid black;
+        border-radius: 4px;
+    }
+
+    .search-button {
+        height: 64px;
+        width: 130px;
+        font-size: 18px;
+        background: #000000;
+        color: #ffffff;
+        /* Use primary-button class styles */
+        margin-left: 15px;
+        border-radius: 30px;
+    }
+
+    .filter-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
     .filter-button {
-        background-color: #000000;
-        color: white;
+        /* Use primary-button class styles */
+        background-color: var(--color-primary);
+        color: var(--color-text-light);
         padding: 10px 20px;
         border: none;
         cursor: pointer;
@@ -20,15 +48,16 @@
     }
     .filters {
         display: none;
-        background-color: #f8f9fa;
+        background-color: var(--color-background-light);
         padding: 15px;
         border-radius: 5px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        max-width: 400px;
+        max-width: 300px;
         margin: 20px auto;
         opacity: 0;
         transform: translateY(-10px);
         transition: opacity 0.3s ease, transform 0.3s ease;
+        text-align: left;
     }
 
     .filters.show {
@@ -41,140 +70,106 @@
     .filters select,
     .apply-button {
         width: 100%;
-        padding: 8px;
-        margin: 5px 0;
-        border: 1px solid #ddd;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid var(--color-border);
         border-radius: 4px;
+        box-sizing: border-box;
     }
 
     .apply-button {
-        
-        background-color: #000000;
+        /* Use primary-button class styles */
+        background-color: var(--color-primary);
         color: white;
         cursor: pointer;
     }
 
-    .apply-button:hover {
-        background-color: #3b413c;
-    }
-
-    .search-container {
-        text-align: center;
-        margin-top: 30px;
-        margin-bottom: 10px;
-    }
-
-    .search-container input {
-        height: 50px;
-        width: 400px;
-        padding: 8px;
-        font-size: 20px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    .search-button {
-        height: 50px;
-        width: 130px;
-        font-family: '1769' , serif;
-        font-size: 20px;
-        background-color: #000000;
-        color: white;
-        padding: 8px 15px;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-        margin-left: 15px;
-    }
-
-    .search-button:hover {
-        background-color: #24282c;
-    }
     .items {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 2rem;
+        padding: 20px;
+        justify-content: center;
     }
 
     .item {
-        height: 350px;
-        width: 350px;
-        margin: 30px;
-        border: 1px solid #ddd;
-        padding: 1rem;
-        border-radius: 5px;
+        background: white;
+        border: 5px solid black;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+    
+    .item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        border: none;
     }
 
     .item h2 {
         margin-top: 0;
+        font-size: 1.5rem;
+        color: var(--color-primary);
     }
-    @media screen and (max-width: 768px) {
-    header h1 {
-        font-size: 50px;
-        padding: 20px;
-    }
-    header p {
-        font-size: 16px;
-        text-align: center;
-        margin: 0;
-    }
-    .navbar ul {
-        flex-direction: column;
-        align-items: center;
-        padding: 0;
-    }
-    .navbar li {
-        margin: 5px 0;
-    }
-    .offers {
-        width: 100%;
-        max-width: 90%;
-        margin: auto;
-    }
-    .box {
-        width: 90%;
-        margin: 40px auto;
-    }
-    .search-container input {
-        width: 90%;
-    }
-    .search-button {
-        width: 100%;
+    
+    .item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
         margin: 10px 0;
+        object-fit: cover;
     }
-}
 
-/* ✅ Even Smaller Screens (📱 < 480px) */
-@media screen and (max-width: 480px) {
-    header {
-        height: auto;
-        padding: 10px 0;
+    .item button {
+        margin: 5px;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
-    header h1 {
-        font-size: 40px;
-        padding: 10px;
-    }
-    h2 {
-        font-size: 30px;
-    }
-    h3 {
-        font-size: 25px;
-    }
-    .offer-box {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .offers {
-        width: 90%;
-        height: auto;
-        padding: 20px;
-    }
-    .box {
-        width: 95%;
-    }
-}
 
+    .item button a {
+        text-decoration: none;
+        color: rgb(0, 0, 0);
+        display: block;
+    }
+    
+    .item button:nth-child(1) { /* Buy Now */
+        background-color: var(--color-primary);
+    }
+    .item button:nth-child(1):hover {
+        background-color: #3b413c;
+    }
 
+    .item button:nth-child(2) { /* Add to Cart */
+        background-color: var(--color-secondary);
+    }
+    .item button:nth-child(2) a {
+        color: var(--color-primary);
+    }
+    .item button:nth-child(2):hover {
+        background-color: #ffc4c4;
+    }
+    
+    /* Responsive adjustments for search and filter */
+    @media screen and (max-width: 768px) {
+        .search-container input {
+            width: 70%;
+        }
+        .search-button {
+            margin-top: 10px;
+            height: 40px;
+            width: 90%;
+            max-width: 400px;
+            margin-left: 0;
+        }
+        .items {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        }
+    }
 </style>
 <section class="search-container">
     <form method="get">
@@ -189,7 +184,7 @@
             <input type="number" name="min_price" placeholder="Min Price">
             <input type="number" name="max_price" placeholder="Max Price">
             <select name="gender">
-                <option value="">All Genders</option>
+                <option value="">Uni-Sex</option>
                 <option value="M">Male</option>
                 <option value="F">Female</option>
             </select>
